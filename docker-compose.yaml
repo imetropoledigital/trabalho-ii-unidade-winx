@@ -1,0 +1,12 @@
+version: "3.5"
+services:
+  mongo_db:
+    container_name: mongo-db
+    image: mongo
+    environment:
+      POSTGRES_DB: projectnosql
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "27017:27017"
+    restart: unless-stopped

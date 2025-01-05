@@ -1,6 +1,11 @@
 package com.imd.mongodbproject.controller;
 
 import com.imd.mongodbproject.service.DocumentService;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +21,10 @@ public class DocumentController {
     private DocumentService documentService;
 
     @PostMapping
+    @Tag(name = "Adiciona documento", description = "Adiciona um documento à collection informada no endpoint")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "Error creating document")
+    })
     public ResponseEntity<?> createDocument(
             @PathVariable String collection,
             @RequestBody Document doc
@@ -29,6 +38,12 @@ public class DocumentController {
     }
 
     @GetMapping
+    @Tag(name = "Recupera lista de documentos", description = "Recupera todos documentos da collection informada no endpoint que atendem os filtros informados")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "Error listing documents"),
+        @ApiResponse(responseCode = "400", description = "It is not allowed to mix inclusion and exclusion of fields in the same request (except _id)."),
+        @ApiResponse(responseCode = "400", description = "Mixing of include/exclude not supported")
+    })
     public ResponseEntity<?> getAllDocuments(
             @PathVariable String collection,
             @RequestParam(value = "query", required = false) String queryParam,
@@ -98,8 +113,13 @@ public class DocumentController {
             return ResponseEntity.badRequest().body("Error listing documents: " + e.getMessage());
         }
     }
-
+  
     @GetMapping("/{id}")
+    @Tag(name = "Recupera um documento", description = "Recupera um documento da collection informada no endpoint")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "Invalid ID"),
+        @ApiResponse(responseCode = "400", description = "Error fetching document")
+    })
     public ResponseEntity<?> getDocumentById(
             @PathVariable String collection,
             @PathVariable String id
@@ -114,11 +134,16 @@ public class DocumentController {
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Invalid ID: " + id);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error fetching document: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Error fetching document" + e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
+    @Tag(name = "Altera um documento", description = "Altera um documento da collection informada no endpoint")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "Invalid ID"),
+        @ApiResponse(responseCode = "400", description = "Error updating document")
+    })
     public ResponseEntity<?> updateDocument(
             @PathVariable String collection,
             @PathVariable String id,
