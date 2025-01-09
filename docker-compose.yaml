@@ -13,12 +13,12 @@ services:
     container_name: mongo-app
     build: .
     ports:
-      - 8082:8082
+      - 8080:8080
     environment:
       spring.data.mongodb.host: mongo_db
       spring.data.mongodb.port: 27017
       spring.data.mongodb.authentication-database: admin
-      server.port: 8082
+      server.port: 8080
     restart: unless-stopped
     depends_on:
       - mongo_db
