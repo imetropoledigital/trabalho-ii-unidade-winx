@@ -15,9 +15,9 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Gerando dados de exemplo para a coleção "restaurants"
-        //generateSampleDataResteurant("restaurants");
-        //generateSampleDataMovies("movies");
-        //generateSampleDataProducts("products");
+        generateSampleDataResteurant("restaurants");
+        generateSampleDataMovies("movies");
+        generateSampleDataProducts("products");
     }
 
     private void generateSampleDataProducts(String products) {
