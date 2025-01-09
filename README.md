@@ -4,7 +4,7 @@
 
 Após iniciar a aplicação é possível utilizar o swagger em: http://localhost:8080/swagger-ui/swagger-ui/index.html.
 
-  ### Docker e Docker-compose
+  ### Docker e Docker Compose
   ```bash
   $ mvn clan package #gerar o executável JAR
   $ docker-compose up mongo_db --build #subir o container com o banco mongo
