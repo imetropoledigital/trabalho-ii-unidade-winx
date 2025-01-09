@@ -1,5 +1,6 @@
 package com.imd.mongodbproject.service;
 
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -63,6 +64,23 @@ public class DocumentService {
         existing.put("_id", id);
 
         return mongoTemplate.save(existing, collectionName);
+    }
+
+    public DeleteResult deleteById(String collectionName, long id) {
+        Document existing = findById(collectionName, id);
+        if (existing == null) {
+            return null;
+        }
+        return mongoTemplate.remove(existing, collectionName);
+    }
+
+    public long deleteAll(String collectionName) {
+        // Cria uma query vazia que corresponde a todos os documentos
+        Query query = new Query();
+        // Remove todos os documentos da coleção
+        DeleteResult result = mongoTemplate.remove(query, collectionName);
+        // Retorna a quantidade de documentos removidos
+        return result.getDeletedCount();
     }
 }
 

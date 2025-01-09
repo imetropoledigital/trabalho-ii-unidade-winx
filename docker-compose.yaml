@@ -4,9 +4,36 @@ services:
     container_name: mongo-db
     image: mongo
     environment:
-      POSTGRES_DB: projectnosql
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - "27017:27017"
     restart: unless-stopped
+    networks:
+      - mongo_network
+      #volumes:
+      # - ./init-scripts:/docker-entrypoint-initdb.d # Adiciona scripts de inicialização ao MongoDB
+
+  mongo_app:
+    container_name: mongo-app
+    build: .
+    ports:
+      - 8082:8082
+    environment:
+      spring.data.mongodb.host: mongo_db
+      spring.data.mongodb.port: 27017
+      spring.data.mongodb.database: projectnosql
+      spring.data.mongodb.authentication-database: admin
+      spring.data.mongodb.username: root
+      spring.data.mongodb.password: root
+      server.port: 8082
+    restart: unless-stopped
+    depends_on:
+      - mongo_db
+    networks:
+      - mongo_network
+
+networks:
+  mongo_network:
+    name: mongo_network
+    driver: bridge

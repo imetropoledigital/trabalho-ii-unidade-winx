@@ -2,6 +2,7 @@ package com.imd.mongodbproject.controller;
 
 import com.imd.mongodbproject.service.DocumentService;
 
+import com.mongodb.client.result.DeleteResult;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -162,5 +163,35 @@ public class DocumentController {
             return ResponseEntity.badRequest().body("Error updating document: " + e.getMessage());
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteDocument(
+            @PathVariable String collection,
+            @PathVariable String id
+    ) {
+        try {
+            long numericId = Long.parseLong(id);
+            DeleteResult documentDelete = documentService.deleteById(collection, numericId);
+
+            if (documentDelete != null && documentDelete.getDeletedCount() > 0) {
+                return ResponseEntity.ok(documentDelete);
+            } else {
+                throw new Exception("Error delete document!");
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteAllDocuments(
+            @PathVariable String collection
+    ) {
+        long numericId = documentService.deleteAll(collection);
+        return ResponseEntity.ok("Deleted " + numericId + " documents");
+    }
+
+
 }
 
