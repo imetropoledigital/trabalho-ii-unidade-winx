@@ -8,5 +8,5 @@ Após iniciar a aplicação é possível utilizar o swagger em: http://localhost
   ```bash
   $ mvn clan package #gerar o executável JAR
   $ docker-compose up mongo_db --build #subir o container com o banco mongo
-  $ docker-compose up mongo_app --build #suvir o container com a aplicação
+  $ docker-compose up mongo_app --build #subir o container com a aplicação
   ```
