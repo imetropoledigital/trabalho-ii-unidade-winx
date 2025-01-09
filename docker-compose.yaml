@@ -6,6 +6,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: projectnosql  # Nome do banco de dados inicial
     ports:
       - "27017:27017"
     restart: unless-stopped
